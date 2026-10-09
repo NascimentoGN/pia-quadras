@@ -1,0 +1,33 @@
+# Dependências
+node_modules/
+package-lock.json
+
+# Ambiente
+.env
+.env.local
+.env.*.local
+
+# Logs
+*.log
+npm-debug.log*
+
+# Sistema
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# Build
+dist/
+build/
+
+# Angular
+frontend/dist/
+.angular/
+
+# Temporários
+*.tmp
+*.bak
