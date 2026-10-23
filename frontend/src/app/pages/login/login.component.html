@@ -1,0 +1,56 @@
+<div class="min-h-screen flex items-center justify-center bg-[#0B0E14] px-4">
+  <div class="bg-[#151A23] border border-gray-800 rounded-xl p-8 w-full max-w-md shadow-2xl">
+    
+    <div class="text-center mb-8">
+      <h1 class="text-3xl font-bold text-white mb-2">
+        <span class="text-[#00E676]">⚽</span> Arena Show
+      </h1>
+      <p class="text-gray-400">{{ isLoginMode ? 'Faça login para reservar' : 'Crie sua conta' }}</p>
+    </div>
+
+    @if (errorMessage) {
+      <div class="bg-red-900/50 border border-red-500 text-red-200 p-3 rounded-lg mb-4 text-sm text-center">
+        {{ errorMessage }}
+      </div>
+    }
+
+    <form (ngSubmit)="onSubmit()" class="space-y-4">
+      
+      <!-- Campo Nome (Apenas no Cadastro) -->
+      @if (!isLoginMode) {
+        <div>
+          <label class="block text-sm text-gray-400 mb-1">Nome Completo</label>
+          <input type="text" [(ngModel)]="name" name="name" required class="w-full bg-[#0B0E14] border border-gray-700 rounded-lg p-3 text-white outline-none focus:border-[#00E676]">
+        </div>
+        <div>
+          <label class="block text-sm text-gray-400 mb-1">Telefone</label>
+          <input type="text" [(ngModel)]="phone" name="phone" class="w-full bg-[#0B0E14] border border-gray-700 rounded-lg p-3 text-white outline-none focus:border-[#00E676]">
+        </div>
+      }
+
+      <div>
+        <label class="block text-sm text-gray-400 mb-1">Email</label>
+        <input type="email" [(ngModel)]="email" name="email" required class="w-full bg-[#0B0E14] border border-gray-700 rounded-lg p-3 text-white outline-none focus:border-[#00E676]">
+      </div>
+
+      <div>
+        <label class="block text-sm text-gray-400 mb-1">Senha</label>
+        <input type="password" [(ngModel)]="password" name="password" required class="w-full bg-[#0B0E14] border border-gray-700 rounded-lg p-3 text-white outline-none focus:border-[#00E676]">
+      </div>
+
+      <button type="submit" class="w-full bg-[#00E676] hover:bg-[#00C853] text-black font-bold py-3 rounded-lg transition-colors mt-2">
+        {{ isLoginMode ? 'Entrar' : 'Criar Conta' }}
+      </button>
+    </form>
+
+    <div class="text-center mt-6">
+      <button (click)="toggleMode()" class="text-sm text-gray-400 hover:text-white transition-colors">
+        {{ isLoginMode ? 'Não tem conta? Cadastre-se' : 'Já tem conta? Faça login' }}
+      </button>
+    </div>
+    
+    <div class="text-center mt-4">
+      <a routerLink="/" class="text-sm text-[#00E676] hover:underline">Voltar para a Home</a>
+    </div>
+  </div>
+</div>
