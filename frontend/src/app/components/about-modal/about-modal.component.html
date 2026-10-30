@@ -1,0 +1,59 @@
+<div class="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
+  <div class="bg-[#151A23] border border-gray-800 rounded-xl p-8 w-full max-w-2xl shadow-2xl relative max-h-[90vh] overflow-y-auto">
+    
+    <button (click)="fechar()" class="absolute top-4 right-4 text-gray-400 hover:text-white text-xl">✕</button>
+
+    <div class="flex items-center gap-3 mb-6">
+      <span class="text-3xl">⚽</span>
+      <h2 class="text-3xl font-bold text-white">Sobre a Arena</h2>
+    </div>
+
+    <div class="space-y-6 text-gray-300">
+      <p>
+        Bem-vindo à <strong class="text-white">Arena Show de Bola</strong>! Somos o espaço ideal para você e seus amigos 
+        praticarem esportes com conforto, segurança e a melhor estrutura da região.
+      </p>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="bg-[#0B0E14] p-4 rounded-lg border border-gray-800">
+          <h3 class="text-[#00E676] font-bold mb-2 flex items-center gap-2">🏟️ Nossas Quadras</h3>
+          <ul class="text-sm space-y-1">
+            <li>• Campo de Areia (Vôlei/Futevôlei)</li>
+            <li>• Quadra de Tênis Profissional</li>
+            <li>• Campo Society (Grama Sintética)</li>
+          </ul>
+        </div>
+
+        <div class="bg-[#0B0E14] p-4 rounded-lg border border-gray-800">
+          <h3 class="text-[#00E676] font-bold mb-2 flex items-center gap-2">✨ Comodidades</h3>
+          <ul class="text-sm space-y-1">
+            <li>• Vestiários com chuveiro quente</li>
+            <li>• Estacionamento privativo</li>
+            <li>• Lanchonete e venda de bebidas</li>
+            <li>• Wi-Fi gratuito</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="bg-[#0B0E14] p-4 rounded-lg border border-gray-800">
+        <h3 class="text-[#00E676] font-bold mb-2 flex items-center gap-2">📋 Regras da Casa</h3>
+        <ul class="text-sm space-y-1 list-disc list-inside">
+          <li>Chegue com 10 minutos de antecedência.</li>
+          <li>O uso de chuteira society ou tênis é obrigatório.</li>
+          <li>Proibido fumar dentro das quadras.</li>
+          <li>Cancelamentos devem ser feitos com até 24h de antecedência.</li>
+        </ul>
+      </div>
+
+      <div class="text-sm text-gray-400 border-t border-gray-800 pt-4">
+        <p><strong class="text-white">Endereço:</strong> Quadra Central, S/N - Brasília/DF</p>
+        <p><strong class="text-white">Telefone/WhatsApp:</strong> (61) 99999-9999</p>
+        <p><strong class="text-white">Horário:</strong> Todos os dias, das 08:00 às 23:00</p>
+      </div>
+    </div>
+
+    <button (click)="fechar()" class="w-full bg-[#00E676] hover:bg-[#00C853] text-black font-bold py-3 rounded-lg transition-colors mt-6">
+      Entendi, vamos jogar!
+    </button>
+  </div>
+</div>

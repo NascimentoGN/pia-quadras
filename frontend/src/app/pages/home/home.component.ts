@@ -3,18 +3,20 @@ import { CommonModule } from '@angular/common';
 import { HeaderComponent } from '../../components/header/header.component';
 import { CourtCardComponent } from '../../components/court-card/court-card.component';
 import { BookingModalComponent } from '../../components/booking-modal/booking-modal.component';
+import { AboutModalComponent } from '../../components/about-modal/about-modal.component'; // <-- Importação
 import { CourtService } from '../../services/court.service';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, HeaderComponent, CourtCardComponent, BookingModalComponent],
+  imports: [CommonModule, HeaderComponent, CourtCardComponent, BookingModalComponent, AboutModalComponent], // <-- Adicionado
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
 export class HomeComponent implements OnInit {
   courts: any[] = [];
-  quadraSelecionada: any = null; 
+  quadraSelecionada: any = null;
+  isAboutOpen = false; // <-- Nova variável
 
   constructor(private courtService: CourtService, private cdr: ChangeDetectorRef) { }
 
@@ -32,11 +34,19 @@ export class HomeComponent implements OnInit {
   }
 
   abrirModal(court: any) {
-    console.log('Clicou na quadra:', court); // Verifique no console F12 se isso aparece
     this.quadraSelecionada = court;
   }
 
   fecharModal() {
     this.quadraSelecionada = null;
+  }
+
+  // Novas funções do About
+  abrirSobre() { 
+    this.isAboutOpen = true; 
+  }
+  
+  fecharSobre() { 
+    this.isAboutOpen = false; 
   }
 }

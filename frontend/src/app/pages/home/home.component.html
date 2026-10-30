@@ -49,16 +49,16 @@
     <button class="bg-[#00E676] text-black font-bold px-6 py-2 rounded-lg flex items-center gap-2">
       📅 Agendar Horário
     </button>
-    <button class="bg-[#151A23] border border-gray-800 text-white px-6 py-2 rounded-lg flex items-center gap-2 hover:bg-gray-800 transition">
+    <!-- BOTÃO ATUALIZADO COM (click) -->
+    <button (click)="abrirSobre()" class="bg-[#151A23] border border-gray-800 text-white px-6 py-2 rounded-lg flex items-center gap-2 hover:bg-gray-800 transition">
       ℹ️ Sobre a Arena
     </button>
   </div>
 
-  <!-- GRID DE QUADRAS -->
+  <!-- Grid de Quadras -->
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
     @if (courts.length > 0) {
       @for (court of courts; track court.id; let i = $index) {
-        <!-- AQUI ESTÁ A CONEXÃO DO BOTÃO COM A HOME -->
         <app-court-card 
           [court]="court" 
           [isMostBooked]="i === 0" 
@@ -74,7 +74,12 @@
 
 </main>
 
-<!-- O MODAL SÓ APARECE SE TIVER UMA QUADRA SELECIONADA -->
+<!-- MODAL DE RESERVA -->
 @if (quadraSelecionada) {
   <app-booking-modal [court]="quadraSelecionada" (close)="fecharModal()"></app-booking-modal>
+}
+
+<!-- MODAL SOBRE A ARENA (NOVO) -->
+@if (isAboutOpen) {
+  <app-about-modal (close)="fecharSobre()"></app-about-modal>
 }

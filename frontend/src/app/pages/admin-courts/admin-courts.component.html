@@ -1,0 +1,110 @@
+<app-header></app-header>
+
+<main class="max-w-7xl mx-auto px-6 pt-28 pb-10">
+  <div class="flex justify-between items-center mb-6">
+    <h1 class="text-3xl font-bold text-white">Gerenciar Quadras</h1>
+    <button (click)="openModal()" class="bg-[#00E676] hover:bg-[#00C853] text-black font-bold px-4 py-2 rounded-lg transition-colors">
+      + Nova Quadra
+    </button>
+  </div>
+
+  @if (loading) {
+    <p class="text-gray-400">Carregando quadras...</p>
+  } @else {
+    <div class="bg-[#151A23] border border-gray-800 rounded-xl overflow-x-auto">
+      <table class="w-full text-left text-sm text-gray-300">
+        <thead class="bg-gray-800 text-xs uppercase font-bold text-gray-400">
+          <tr>
+            <th class="px-6 py-4">ID</th>
+            <th class="px-6 py-4">Nome</th>
+            <th class="px-6 py-4">Tipo</th>
+            <th class="px-6 py-4">Preço/Hora</th>
+            <th class="px-6 py-4">Status</th>
+            <th class="px-6 py-4">Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (court of courts; track court.id) {
+            <tr class="border-b border-gray-800 hover:bg-gray-800/50 transition-colors">
+              <td class="px-6 py-4 font-bold text-white">#{{ court.id }}</td>
+              <td class="px-6 py-4">{{ court.name }}</td>
+              <td class="px-6 py-4 uppercase">{{ court.type }}</td>
+              <td class="px-6 py-4 font-bold text-[#00E676]">R$ {{ court.price_per_hour }}</td>
+              <td class="px-6 py-4">
+                <span class="px-2 py-1 rounded text-xs font-bold" [ngClass]="court.is_active ? 'bg-green-500/20 text-green-500' : 'bg-red-500/20 text-red-500'">
+                  {{ court.is_active ? 'Ativa' : 'Inativa' }}
+                </span>
+              </td>
+              <td class="px-6 py-4">
+                <div class="flex gap-2">
+                  <button (click)="openModal(court)" class="bg-blue-600 hover:bg-blue-500 text-white px-3 py-1 rounded text-xs font-bold transition-colors">
+                    Editar
+                  </button>
+                  
+                  <!-- LÓGICA CONDICIONAL DOS BOTÕES -->
+                  @if (court.is_active) {
+                    <button (click)="deleteCourt(court.id)" class="bg-red-600 hover:bg-red-500 text-white px-3 py-1 rounded text-xs font-bold transition-colors">
+                      Desativar
+                    </button>
+                  } @else {
+                    <button (click)="reactivateCourt(court)" class="bg-green-600 hover:bg-green-500 text-white px-3 py-1 rounded text-xs font-bold transition-colors">
+                      Reativar
+                    </button>
+                  }
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</main>
+
+<!-- MODAL DE CADASTRO/EDIÇÃO -->
+@if (isModalOpen) {
+  <div class="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
+    <div class="bg-[#151A23] border border-gray-800 rounded-xl p-6 w-full max-w-md shadow-2xl relative max-h-[90vh] overflow-y-auto">
+      
+      <button (click)="closeModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white text-xl">✕</button>
+      
+      <h2 class="text-2xl font-bold text-white mb-6">
+        {{ editingCourt ? 'Editar Quadra' : 'Nova Quadra' }}
+      </h2>
+
+      <div class="space-y-4 mb-6">
+        <div>
+          <label class="block text-sm text-gray-400 mb-1">Nome</label>
+          <input type="text" [(ngModel)]="formData.name" class="w-full bg-[#0B0E14] border border-gray-700 rounded-lg p-3 text-white outline-none focus:border-[#00E676]">
+        </div>
+        <div>
+          <label class="block text-sm text-gray-400 mb-1">Tipo</label>
+          <select [(ngModel)]="formData.type" class="w-full bg-[#0B0E14] border border-gray-700 rounded-lg p-3 text-white outline-none focus:border-[#00E676]">
+            <option value="society">Society</option>
+            <option value="areia">Areia</option>
+            <option value="tenis">Tênis</option>
+            <option value="futsal">Futsal</option>
+            <option value="basquete">Basquete</option>
+            <option value="volei">Vôlei</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-sm text-gray-400 mb-1">Preço Normal (R$)</label>
+          <input type="number" [(ngModel)]="formData.price_per_hour" class="w-full bg-[#0B0E14] border border-gray-700 rounded-lg p-3 text-white outline-none focus:border-[#00E676]">
+        </div>
+        <div>
+          <label class="block text-sm text-gray-400 mb-1">Preço Horário Nobre (R$)</label>
+          <input type="number" [(ngModel)]="formData.price_peak_hour" class="w-full bg-[#0B0E14] border border-gray-700 rounded-lg p-3 text-white outline-none focus:border-[#00E676]">
+        </div>
+        <div>
+          <label class="block text-sm text-gray-400 mb-1">Capacidade (pessoas)</label>
+          <input type="number" [(ngModel)]="formData.capacity" class="w-full bg-[#0B0E14] border border-gray-700 rounded-lg p-3 text-white outline-none focus:border-[#00E676]">
+        </div>
+      </div>
+
+      <button (click)="saveCourt()" class="w-full bg-[#00E676] hover:bg-[#00C853] text-black font-bold py-3 rounded-lg transition-colors">
+        Salvar Quadra
+      </button>
+    </div>
+  </div>
+}

@@ -1,13 +1,14 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
+import { RouterLink } from '@angular/router'; // <-- IMPORTANTE
 import { HeaderComponent } from '../../components/header/header.component';
 import { ToastService } from '../../services/toast.service';
 
 @Component({
   selector: 'app-admin-dashboard',
   standalone: true,
-  imports: [CommonModule, HeaderComponent],
+  imports: [CommonModule, HeaderComponent, RouterLink], // <-- ADICIONADO
   templateUrl: './admin-dashboard.component.html'
 })
 export class AdminDashboardComponent implements OnInit {
@@ -15,14 +16,13 @@ export class AdminDashboardComponent implements OnInit {
   loading = true;
   errorMessage = '';
   
-  // Variáveis do Modal de Confirmação
   bookingToAction: any = null;
   actionType: 'confirmed' | 'cancelled' | null = null;
 
   constructor(
     private http: HttpClient, 
     private cdr: ChangeDetectorRef,
-    private toastService: ToastService // <-- Injetado
+    private toastService: ToastService
   ) {}
 
   ngOnInit() {
@@ -46,13 +46,11 @@ export class AdminDashboardComponent implements OnInit {
     });
   }
 
-  // Abre o modal para confirmar a ação
   askUpdateStatus(booking: any, newStatus: string) {
     this.bookingToAction = booking;
     this.actionType = newStatus as 'confirmed' | 'cancelled';
   }
 
-  // Executa a ação após o usuário confirmar no modal
   executeUpdateStatus() {
     if (!this.bookingToAction || !this.actionType) return;
 
