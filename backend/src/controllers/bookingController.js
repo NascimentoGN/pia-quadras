@@ -4,7 +4,7 @@ export const BookingController = {
     create: async (req, res) => {
         try {
             const { court_id, booking_date, start_time, end_time, total_price, guest_emails } = req.body;
-            const user_id = req.user ? req.user.id : 1; // Se não tiver token, usa o admin (id 1) para teste
+            const user_id = req.user.id; 
 
             const booking = await Booking.create({
                 court_id, user_id, booking_date, start_time, end_time, total_price
@@ -44,17 +44,54 @@ export const BookingController = {
         }
     },
 
-        getDetails: async (req, res) => {
+    getDetails: async (req, res) => {
         try {
             const booking_id = req.params.id;
-            const user_id = req.user.id; // <-- VOLTOU A PEGAR DO TOKEN
+            const user_id = req.user.id;
 
             const booking = await Booking.findDetailsById(booking_id, user_id);
-            if (!booking) return res.status(404).json({ error: 'Reserva não encontrada.' });
+
+            if (!booking) {
+                return res.status(404).json({ error: 'Reserva não encontrada ou não pertence a você.' });
+            }
+
             res.json(booking);
         } catch (error) {
-            console.error('ERRO:', error);
-            res.status(500).json({ error: 'Erro ao buscar detalhes.' });
+            console.error(error);
+            res.status(500).json({ error: 'Erro ao buscar detalhes da reserva' });
+        }
+    },
+
+    listAllForAdmin: async (req, res) => {
+        try {
+            const bookings = await Booking.findAllForAdmin();
+            res.json(bookings);
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ error: 'Erro ao buscar todas as reservas' });
+        }
+    },
+
+    // NOVO MÉTODO
+    updateStatus: async (req, res) => {
+        try {
+            const booking_id = req.params.id;
+            const { status } = req.body;
+
+            if (!['confirmed', 'cancelled'].includes(status)) {
+                return res.status(400).json({ error: 'Status inválido.' });
+            }
+
+            const updated = await Booking.updateStatus(booking_id, status);
+
+            if (!updated) {
+                return res.status(404).json({ error: 'Reserva não encontrada.' });
+            }
+
+            res.json({ message: `Reserva ${status === 'confirmed' ? 'confirmada' : 'cancelada'} com sucesso!` });
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ error: 'Erro ao atualizar status da reserva.' });
         }
     }
 };

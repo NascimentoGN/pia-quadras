@@ -1,0 +1,94 @@
+<app-header></app-header>
+
+<main class="max-w-7xl mx-auto px-6 pt-28 pb-10">
+  <div class="flex justify-between items-center mb-6">
+    <h1 class="text-3xl font-bold text-white">Painel do Administrador</h1>
+  </div>
+
+  @if (loading) {
+    <p class="text-gray-400">Carregando reservas...</p>
+  } @else if (errorMessage) {
+    <div class="bg-red-900/50 border border-red-500 text-red-200 p-4 rounded-lg">
+      {{ errorMessage }}
+    </div>
+  } @else {
+    <div class="bg-[#151A23] border border-gray-800 rounded-xl overflow-x-auto">
+      <table class="w-full text-left text-sm text-gray-300">
+        <thead class="bg-gray-800 text-xs uppercase font-bold text-gray-400">
+          <tr>
+            <th class="px-6 py-4">ID</th>
+            <th class="px-6 py-4">Quadra</th>
+            <th class="px-6 py-4">Cliente</th>
+            <th class="px-6 py-4">Data / Hora</th>
+            <th class="px-6 py-4">Valor</th>
+            <th class="px-6 py-4">Status</th>
+            <th class="px-6 py-4">Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (booking of bookings; track booking.id) {
+            <tr class="border-b border-gray-800 hover:bg-gray-800/50 transition-colors">
+              <td class="px-6 py-4 font-bold text-white">#{{ booking.id }}</td>
+              <td class="px-6 py-4">{{ booking.court_name }}</td>
+              <td class="px-6 py-4">
+                <div class="font-semibold text-white">{{ booking.user_name }}</div>
+                <div class="text-xs text-gray-500">{{ booking.user_email }}</div>
+              </td>
+              <td class="px-6 py-4">📅 {{ booking.booking_date }} às {{ booking.start_time }}</td>
+              <td class="px-6 py-4 font-bold text-[#00E676]">R$ {{ booking.total_price }}</td>
+              <td class="px-6 py-4">
+                <span class="px-3 py-1 rounded-full text-xs font-bold uppercase"
+                      [ngClass]="{
+                        'bg-yellow-500/20 text-yellow-500': booking.status === 'pending',
+                        'bg-green-500/20 text-green-500': booking.status === 'confirmed',
+                        'bg-red-500/20 text-red-500': booking.status === 'cancelled'
+                      }">
+                  {{ booking.status }}
+                </span>
+              </td>
+              <td class="px-6 py-4">
+                @if (booking.status === 'pending') {
+                  <div class="flex gap-2">
+                    <button (click)="askUpdateStatus(booking, 'confirmed')" 
+                            class="bg-green-600 hover:bg-green-500 text-white px-3 py-1 rounded text-xs font-bold transition-colors">
+                      Confirmar
+                    </button>
+                    <button (click)="askUpdateStatus(booking, 'cancelled')" 
+                            class="bg-red-600 hover:bg-red-500 text-white px-3 py-1 rounded text-xs font-bold transition-colors">
+                      Cancelar
+                    </button>
+                  </div>
+                } @else {
+                  <span class="text-gray-500 text-xs italic">Sem ações</span>
+                }
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</main>
+
+<!-- MODAL DE CONFIRMAÇÃO -->
+@if (bookingToAction && actionType) {
+  <div class="fixed inset-0 bg-black/80 flex items-center justify-center z-[60] p-4">
+    <div class="bg-[#151A23] border border-gray-800 rounded-xl p-6 w-full max-w-md shadow-2xl relative text-center">
+      <h2 class="text-2xl font-bold text-white mb-2">Confirmar Ação</h2>
+      <p class="text-gray-400 mb-6">
+        Tem certeza que deseja <span class="font-bold" [ngClass]="actionType === 'confirmed' ? 'text-green-500' : 'text-red-500'">{{ actionType === 'confirmed' ? 'CONFIRMAR' : 'CANCELAR' }}</span> a reserva <span class="text-white">#{{ bookingToAction.id }}</span>?
+      </p>
+      
+      <div class="flex gap-4">
+        <button (click)="closeModal()" class="w-full bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 rounded-lg transition-colors">
+          Voltar
+        </button>
+        <button (click)="executeUpdateStatus()" 
+                class="w-full font-bold py-3 rounded-lg transition-colors text-white"
+                [ngClass]="actionType === 'confirmed' ? 'bg-green-600 hover:bg-green-500' : 'bg-red-600 hover:bg-red-500'">
+          Sim, tenho certeza
+        </button>
+      </div>
+    </div>
+  </div>
+}

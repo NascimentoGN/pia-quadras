@@ -68,8 +68,7 @@ export const Booking = {
         }
     },
 
-        findDetailsById: async (booking_id, user_id) => {
-        // 1. Busca a reserva principal
+    findDetailsById: async (booking_id, user_id) => {
         const [bookingRows] = await pool.query(
             `SELECT b.*, c.name as court_name 
              FROM bookings b
@@ -81,7 +80,6 @@ export const Booking = {
         if (bookingRows.length === 0) return null;
         const booking = bookingRows[0];
 
-        // 2. Busca os jogadores (sem JOIN para evitar erros)
         const [players] = await pool.query(
             `SELECT id, amount_due, payment_status, guest_email, user_id 
              FROM booking_players 
@@ -90,5 +88,25 @@ export const Booking = {
         );
 
         return { ...booking, players };
+    },
+
+    findAllForAdmin: async () => {
+        const [rows] = await pool.query(
+            `SELECT b.*, c.name as court_name, u.name as user_name, u.email as user_email
+             FROM bookings b
+             JOIN courts c ON b.court_id = c.id
+             JOIN users u ON b.user_id = u.id
+             ORDER BY b.booking_date DESC, b.start_time DESC`
+        );
+        return rows;
+    },
+
+    // NOVA FUNÇÃO
+    updateStatus: async (booking_id, status) => {
+        const [result] = await pool.query(
+            `UPDATE bookings SET status = ? WHERE id = ?`,
+            [status, booking_id]
+        );
+        return result.affectedRows > 0;
     }
 };

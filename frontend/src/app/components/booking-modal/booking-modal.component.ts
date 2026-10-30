@@ -2,6 +2,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CourtService } from '../../services/court.service';
+import { ToastService } from '../../services/toast.service';
 
 @Component({
   selector: 'app-booking-modal',
@@ -16,9 +17,10 @@ export class BookingModalComponent {
 
   bookingDate: string = '';
   startTime: string = '08:00';
-  guestEmails: string = ''; // <-- Variável para os e-mails
+  guestEmails: string = '';
+  isLoading: boolean = false; // Controla o spinner
   
-  constructor(private courtService: CourtService) {}
+  constructor(private courtService: CourtService, private toastService: ToastService) {}
 
   fechar() {
     this.close.emit();
@@ -26,11 +28,12 @@ export class BookingModalComponent {
 
   confirmarReserva() {
     if (!this.bookingDate) {
-      alert('Por favor, selecione uma data!');
+      this.toastService.error('Por favor, selecione uma data!');
       return;
     }
 
-    // Transforma a string "email1, email2" em um array
+    this.isLoading = true; // Ativa o loading
+
     const emailsArray = this.guestEmails.split(',').map(e => e.trim()).filter(e => e !== '');
 
     const bookingData = {
@@ -44,17 +47,19 @@ export class BookingModalComponent {
 
     this.courtService.createBooking(bookingData).subscribe({
       next: (res) => {
-        alert(`Reserva confirmada!\nValor dividido: R$ ${res.amount_per_person.toFixed(2)} por pessoa.`);
+        this.isLoading = false;
+        this.toastService.success(`Reserva confirmada! Valor dividido: R$ ${res.amount_per_person.toFixed(2)} por pessoa.`);
         this.fechar();
       },
       error: (err) => {
+        this.isLoading = false;
         if (err.status === 409) {
           const querEntrarNaLista = confirm('Este horário já está reservado. Deseja entrar na lista de espera?');
           if (querEntrarNaLista) {
             this.entrarNaLista();
           }
         } else {
-          alert('Erro ao fazer a reserva. Verifique o console.');
+          this.toastService.error('Erro ao fazer a reserva.');
           console.error(err);
         }
       }
@@ -62,6 +67,7 @@ export class BookingModalComponent {
   }
 
   entrarNaLista() {
+    this.isLoading = true;
     const waitlistData = {
       court_id: this.court.id,
       desired_date: this.bookingDate,
@@ -71,11 +77,13 @@ export class BookingModalComponent {
 
     this.courtService.joinWaitlist(waitlistData).subscribe({
       next: (res) => {
-        alert(res.message);
+        this.isLoading = false;
+        this.toastService.success(res.message);
         this.fechar();
       },
       error: (err) => {
-        alert(err.error?.error || 'Erro ao entrar na lista de espera.');
+        this.isLoading = false;
+        this.toastService.error(err.error?.error || 'Erro ao entrar na lista de espera.');
         console.error(err);
       }
     });
