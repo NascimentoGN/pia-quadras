@@ -1,10 +1,17 @@
-<header class="bg-[#0B0E14] border-b border-gray-800 py-4 px-6 md:px-12 flex justify-between items-center sticky top-0 z-50">
-  <a routerLink="/" class="flex items-center gap-2 text-decoration-none">
-    <div class="text-[#00E676] font-bold text-xl flex items-center gap-1">
-      <span>⚽</span> PIA QUADRA
+<header class="bg-pia-dark/95 backdrop-blur-md border-b border-pia-green/30 py-4 px-6 md:px-12 flex justify-between items-center sticky top-0 z-50">
+  
+  <!-- LOGO PERSONALIZADO -->
+  <a routerLink="/" class="flex items-center gap-3 group">
+    <!-- Sua imagem da logo -->
+    <img src="logo.png" alt="Pia Quadra Logo" class="w-10 h-10 rounded-xl group-hover:scale-105 transition-transform duration-300 shadow-lg">
+    
+    <!-- Texto da marca -->
+    <div class="text-2xl font-extrabold tracking-tight text-pia-cream">
+      pia <span class="text-pia-green-light font-bold">quadra</span>
     </div>
   </a>
   
+  <!-- MENU -->
   <div class="flex items-center gap-6">
     @if (currentUser) {
       <div class="flex items-center gap-4">
@@ -13,17 +20,17 @@
             Painel Admin
           </a>
         }
-        <a routerLink="/my-bookings" class="text-gray-300 hover:text-[#00E676] text-sm font-semibold transition-colors">
+        <a routerLink="/my-bookings" class="text-pia-cream hover:text-pia-green-light text-sm font-semibold transition-colors">
           Minhas Reservas
         </a>
         <span class="text-gray-300 text-sm">Olá, <span class="text-white font-bold">{{ currentUser.name }}</span></span>
-        <button (click)="logout()" class="text-gray-400 hover:text-red-500 text-sm transition-colors">Sair</button>
+        <button (click)="logout()" class="text-gray-400 hover:text-red-400 text-sm transition-colors">Sair</button>
       </div>
     } @else {
-      <a routerLink="/login" class="text-sm text-[#00E676] hover:text-white font-semibold transition-colors">Entrar / Cadastrar</a>
+      <a routerLink="/login" class="text-sm text-pia-green-light hover:text-pia-cream font-bold transition-colors">Entrar / Cadastrar</a>
     }
 
-    <button class="text-gray-400 hover:text-white transition-colors">
+    <button class="text-gray-400 hover:text-pia-cream transition-colors">
       <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
       </svg>

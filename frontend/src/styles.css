@@ -1,9 +1,35 @@
 @import "tailwindcss";
 
+@theme {
+  --color-pia-green: #1B4332;
+  --color-pia-green-light: #2D6A4F;
+  --color-pia-cream: #F3EFE5;
+  --color-pia-dark: #121212;
+  --color-pia-card: #1E1E1E;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap');
+
 body {
-  background-color: #0B0E14;
-  color: #ffffff;
-  font-family: 'Inter', sans-serif;
+  background-color: var(--color-pia-dark);
+  color: var(--color-pia-cream);
+  font-family: 'Outfit', sans-serif;
   margin: 0;
   padding: 0;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Scrollbar customizada */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #121212; 
+}
+::-webkit-scrollbar-thumb {
+  background: #1B4332; 
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #2D6A4F; 
 }

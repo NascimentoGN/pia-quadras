@@ -1,0 +1,56 @@
+<app-header></app-header>
+
+<main class="max-w-7xl mx-auto px-6 pt-28 pb-10">
+  <div class="flex justify-between items-center mb-6">
+    <h1 class="text-3xl font-bold text-pia-cream">Gestão de Clientes</h1>
+    <a routerLink="/admin" class="text-pia-green-light hover:text-pia-cream font-semibold text-sm transition-colors">
+      ← Voltar ao Painel
+    </a>
+  </div>
+
+  @if (loading) {
+    <p class="text-gray-400">Carregando clientes...</p>
+  } @else {
+    <div class="bg-pia-card border border-pia-green/30 rounded-2xl overflow-x-auto">
+      <table class="w-full text-left text-sm text-gray-300">
+        <thead class="bg-pia-green/20 text-xs uppercase font-bold text-pia-cream">
+          <tr>
+            <th class="px-6 py-4">ID</th>
+            <th class="px-6 py-4">Nome</th>
+            <th class="px-6 py-4">Contato</th>
+            <th class="px-6 py-4">Perfil</th>
+            <th class="px-6 py-4">Data de Cadastro</th>
+            <th class="px-6 py-4">Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (user of users; track user.id) {
+            <tr class="border-b border-pia-green/10 hover:bg-pia-green/5 transition-colors">
+              <td class="px-6 py-4 font-bold text-pia-cream">#{{ user.id }}</td>
+              <td class="px-6 py-4 font-semibold text-white">{{ user.name }}</td>
+              <td class="px-6 py-4">
+                <div class="text-pia-cream">{{ user.email }}</div>
+                <div class="text-xs text-gray-500">{{ user.phone || 'Sem telefone' }}</div>
+              </td>
+              <td class="px-6 py-4">
+                <span class="px-2 py-1 rounded text-xs font-bold uppercase"
+                      [ngClass]="user.role === 'admin' ? 'bg-yellow-500/20 text-yellow-500' : 'bg-blue-500/20 text-blue-400'">
+                  <!-- TRADUÇÃO DO PERFIL -->
+                  {{ user.role === 'admin' ? 'Administrador' : 'Cliente' }}
+                </span>
+              </td>
+              <td class="px-6 py-4">{{ user.created_at | date:'dd/MM/yyyy' }}</td>
+              <td class="px-6 py-4">
+                <span class="px-2 py-1 rounded text-xs font-bold" 
+                      [ngClass]="user.is_active ? 'bg-green-500/20 text-green-500' : 'bg-red-500/20 text-red-500'">
+                  <!-- TRADUÇÃO DO STATUS -->
+                  {{ user.is_active ? 'Ativo' : 'Inativo' }}
+                </span>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</main>

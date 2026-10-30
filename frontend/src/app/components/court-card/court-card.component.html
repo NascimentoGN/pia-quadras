@@ -1,36 +1,38 @@
-<div class="bg-[#151A23] border border-gray-800 rounded-xl overflow-hidden hover:border-[#00E676] transition-all duration-300 flex flex-col h-full relative">
+<div class="bg-pia-card border border-pia-green/30 rounded-2xl overflow-hidden hover:border-pia-green-light transition-all duration-300 flex flex-col h-full relative">
   
   @if (isMostBooked) {
-    <div class="absolute top-3 left-3 bg-[#00E676] text-black text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1 z-10 shadow-lg">
+    <div class="absolute top-3 left-3 bg-pia-cream text-pia-green text-xs font-extrabold px-3 py-1 rounded-full flex items-center gap-1 z-10 shadow-lg">
       ⚡ Mais Reservado
     </div>
   }
 
-  <div class="h-48 w-full bg-gray-800 relative flex items-center justify-center">
+  <!-- ÁREA DA IMAGEM -->
+  <div class="h-48 w-full bg-pia-green/20 relative">
     @if (court.image_url) {
-      <img [src]="court.image_url" alt="Quadra" class="w-full h-full object-cover">
+      <img [src]="court.image_url" [alt]="court.name" class="w-full h-full object-cover">
     } @else {
-      <span class="text-gray-600 font-semibold tracking-widest uppercase text-sm">Arena Show</span>
+      <div class="w-full h-full flex items-center justify-center">
+        <span class="text-pia-green-light font-extrabold tracking-widest uppercase text-sm">Pia Quadra</span>
+      </div>
     }
   </div>
 
   <div class="p-5 flex flex-col flex-grow">
-    <h3 class="text-xl font-bold text-white mb-1">{{ court.name }}</h3>
+    <h3 class="text-xl font-bold text-pia-cream mb-1">{{ court.name }}</h3>
     <p class="text-sm text-gray-400 mb-4">Quadra de Esportes</p>
     
-    <div class="flex items-center gap-4 text-sm mb-6 mt-auto">
-      <div class="flex items-center gap-1 text-white">
+    <div class="flex items-center gap-4 text-sm mb-6 mt-auto text-pia-cream">
+      <div class="flex items-center gap-1">
         <span class="text-yellow-500 text-base">☀️</span>
         <span>R$ {{ court.price_per_hour }}/h</span>
       </div>
-      <div class="flex items-center gap-1 text-white">
-        <span class="text-blue-500 text-base">🌙</span>
+      <div class="flex items-center gap-1">
+        <span class="text-blue-400 text-base">🌙</span>
         <span>R$ {{ court.price_peak_hour }}/h</span>
       </div>
     </div>
 
-    <!-- O CLIQUE ACONTECE AQUI -->
-    <button (click)="selecionar.emit(court)" class="w-full bg-[#00E676] hover:bg-[#00C853] text-black font-bold py-3 px-4 rounded-lg flex justify-between items-center transition-colors">
+    <button (click)="selecionar.emit(court)" class="w-full bg-pia-green hover:bg-pia-green-light text-pia-cream font-bold py-3 px-4 rounded-xl flex justify-between items-center transition-colors">
       Selecionar
       <span>→</span>
     </button>

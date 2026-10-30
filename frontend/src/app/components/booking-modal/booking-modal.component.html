@@ -1,20 +1,20 @@
-<div class="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
-  <div class="bg-[#151A23] border border-gray-800 rounded-xl p-6 w-full max-w-md shadow-2xl relative">
+<div class="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4 backdrop-blur-sm">
+  <div class="bg-pia-card border border-pia-green/40 rounded-2xl p-6 w-full max-w-md shadow-2xl relative">
     
-    <button (click)="fechar()" class="absolute top-4 right-4 text-gray-400 hover:text-white text-xl">✕</button>
+    <button (click)="fechar()" class="absolute top-4 right-4 text-gray-400 hover:text-pia-cream text-xl transition-colors">✕</button>
 
-    <h2 class="text-2xl font-bold text-white mb-2">{{ court?.name }}</h2>
+    <h2 class="text-2xl font-extrabold text-pia-cream mb-2">{{ court?.name }}</h2>
     <p class="text-gray-400 mb-6">Escolha a data e horário</p>
 
     <div class="space-y-4 mb-6">
       <div>
-        <label class="block text-sm text-gray-400 mb-1">Data</label>
-        <input type="date" [(ngModel)]="bookingDate" class="w-full bg-[#0B0E14] border border-gray-700 rounded-lg p-3 text-white outline-none focus:border-[#00E676]">
+        <label class="block text-sm font-semibold text-pia-cream mb-1">Data</label>
+        <input type="date" [(ngModel)]="bookingDate" class="w-full bg-pia-dark border border-pia-green/30 rounded-xl p-3 text-pia-cream outline-none focus:border-pia-green-light">
       </div>
       
       <div>
-        <label class="block text-sm text-gray-400 mb-1">Horário</label>
-        <select [(ngModel)]="startTime" class="w-full bg-[#0B0E14] border border-gray-700 rounded-lg p-3 text-white outline-none focus:border-[#00E676]">
+        <label class="block text-sm font-semibold text-pia-cream mb-1">Horário</label>
+        <select [(ngModel)]="startTime" class="w-full bg-pia-dark border border-pia-green/30 rounded-xl p-3 text-pia-cream outline-none focus:border-pia-green-light">
           <option value="08:00">08:00</option>
           <option value="09:00">09:00</option>
           <option value="10:00">10:00</option>
@@ -23,16 +23,16 @@
       </div>
 
       <div>
-        <label class="block text-sm text-gray-400 mb-1">Convidar Amigos (E-mails separados por vírgula)</label>
-        <input type="text" [(ngModel)]="guestEmails" placeholder="amigo1@email.com, amigo2@email.com" class="w-full bg-[#0B0E14] border border-gray-700 rounded-lg p-3 text-white outline-none focus:border-[#00E676]">
-        <p class="text-xs text-gray-500 mt-1">O valor será dividido automaticamente entre vocês.</p>
+        <label class="block text-sm font-semibold text-pia-cream mb-1">Convidar Amigos (E-mails separados por vírgula)</label>
+        <input type="text" [(ngModel)]="guestEmails" placeholder="amigo1@email.com, amigo2@email.com" class="w-full bg-pia-dark border border-pia-green/30 rounded-xl p-3 text-pia-cream outline-none focus:border-pia-green-light placeholder-gray-600">
+        <p class="text-xs text-gray-500 mt-1">O valor será dividido automaticamente.</p>
       </div>
     </div>
 
     <button (click)="confirmarReserva()" [disabled]="isLoading" 
-            class="w-full bg-[#00E676] hover:bg-[#00C853] disabled:bg-gray-600 disabled:cursor-not-allowed text-black font-bold py-3 rounded-lg transition-colors flex justify-center items-center gap-2">
+            class="w-full bg-pia-green hover:bg-pia-green-light disabled:bg-gray-600 disabled:cursor-not-allowed text-pia-cream font-bold py-3 rounded-xl transition-colors flex justify-center items-center gap-2">
       @if (isLoading) {
-        <svg class="animate-spin h-5 w-5 text-black" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+        <svg class="animate-spin h-5 w-5 text-pia-cream" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
           <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
           <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
         </svg>

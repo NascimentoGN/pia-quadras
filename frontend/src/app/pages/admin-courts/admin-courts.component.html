@@ -2,8 +2,8 @@
 
 <main class="max-w-7xl mx-auto px-6 pt-28 pb-10">
   <div class="flex justify-between items-center mb-6">
-    <h1 class="text-3xl font-bold text-white">Gerenciar Quadras</h1>
-    <button (click)="openModal()" class="bg-[#00E676] hover:bg-[#00C853] text-black font-bold px-4 py-2 rounded-lg transition-colors">
+    <h1 class="text-3xl font-bold text-pia-cream">Gerenciar Quadras</h1>
+    <button (click)="openModal()" class="bg-pia-green hover:bg-pia-green-light text-pia-cream font-bold px-4 py-2 rounded-xl transition-colors">
       + Nova Quadra
     </button>
   </div>
@@ -11,9 +11,9 @@
   @if (loading) {
     <p class="text-gray-400">Carregando quadras...</p>
   } @else {
-    <div class="bg-[#151A23] border border-gray-800 rounded-xl overflow-x-auto">
+    <div class="bg-pia-card border border-pia-green/30 rounded-2xl overflow-x-auto">
       <table class="w-full text-left text-sm text-gray-300">
-        <thead class="bg-gray-800 text-xs uppercase font-bold text-gray-400">
+        <thead class="bg-pia-green/20 text-xs uppercase font-bold text-pia-cream">
           <tr>
             <th class="px-6 py-4">ID</th>
             <th class="px-6 py-4">Nome</th>
@@ -25,13 +25,15 @@
         </thead>
         <tbody>
           @for (court of courts; track court.id) {
-            <tr class="border-b border-gray-800 hover:bg-gray-800/50 transition-colors">
-              <td class="px-6 py-4 font-bold text-white">#{{ court.id }}</td>
+            <tr class="border-b border-pia-green/10 hover:bg-pia-green/5 transition-colors">
+              <td class="px-6 py-4 font-bold text-pia-cream">#{{ court.id }}</td>
               <td class="px-6 py-4">{{ court.name }}</td>
               <td class="px-6 py-4 uppercase">{{ court.type }}</td>
-              <td class="px-6 py-4 font-bold text-[#00E676]">R$ {{ court.price_per_hour }}</td>
+              <td class="px-6 py-4 font-bold text-pia-green-light">R$ {{ court.price_per_hour }}</td>
               <td class="px-6 py-4">
-                <span class="px-2 py-1 rounded text-xs font-bold" [ngClass]="court.is_active ? 'bg-green-500/20 text-green-500' : 'bg-red-500/20 text-red-500'">
+                <span class="px-2 py-1 rounded text-xs font-bold" 
+                      [ngClass]="court.is_active ? 'bg-green-500/20 text-green-500' : 'bg-red-500/20 text-red-500'">
+                  <!-- TRADUÇÃO DO STATUS DA QUADRA -->
                   {{ court.is_active ? 'Ativa' : 'Inativa' }}
                 </span>
               </td>
@@ -41,7 +43,6 @@
                     Editar
                   </button>
                   
-                  <!-- LÓGICA CONDICIONAL DOS BOTÕES -->
                   @if (court.is_active) {
                     <button (click)="deleteCourt(court.id)" class="bg-red-600 hover:bg-red-500 text-white px-3 py-1 rounded text-xs font-bold transition-colors">
                       Desativar
@@ -63,23 +64,23 @@
 
 <!-- MODAL DE CADASTRO/EDIÇÃO -->
 @if (isModalOpen) {
-  <div class="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
-    <div class="bg-[#151A23] border border-gray-800 rounded-xl p-6 w-full max-w-md shadow-2xl relative max-h-[90vh] overflow-y-auto">
+  <div class="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4 backdrop-blur-sm">
+    <div class="bg-pia-card border border-pia-green/40 rounded-2xl p-6 w-full max-w-md shadow-2xl relative max-h-[90vh] overflow-y-auto">
       
-      <button (click)="closeModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white text-xl">✕</button>
+      <button (click)="closeModal()" class="absolute top-4 right-4 text-gray-400 hover:text-pia-cream text-xl transition-colors">✕</button>
       
-      <h2 class="text-2xl font-bold text-white mb-6">
+      <h2 class="text-2xl font-extrabold text-pia-cream mb-6">
         {{ editingCourt ? 'Editar Quadra' : 'Nova Quadra' }}
       </h2>
 
       <div class="space-y-4 mb-6">
         <div>
-          <label class="block text-sm text-gray-400 mb-1">Nome</label>
-          <input type="text" [(ngModel)]="formData.name" class="w-full bg-[#0B0E14] border border-gray-700 rounded-lg p-3 text-white outline-none focus:border-[#00E676]">
+          <label class="block text-sm font-semibold text-pia-cream mb-1">Nome</label>
+          <input type="text" [(ngModel)]="formData.name" class="w-full bg-pia-dark border border-pia-green/30 rounded-xl p-3 text-pia-cream outline-none focus:border-pia-green-light">
         </div>
         <div>
-          <label class="block text-sm text-gray-400 mb-1">Tipo</label>
-          <select [(ngModel)]="formData.type" class="w-full bg-[#0B0E14] border border-gray-700 rounded-lg p-3 text-white outline-none focus:border-[#00E676]">
+          <label class="block text-sm font-semibold text-pia-cream mb-1">Tipo</label>
+          <select [(ngModel)]="formData.type" class="w-full bg-pia-dark border border-pia-green/30 rounded-xl p-3 text-pia-cream outline-none focus:border-pia-green-light">
             <option value="society">Society</option>
             <option value="areia">Areia</option>
             <option value="tenis">Tênis</option>
@@ -89,20 +90,20 @@
           </select>
         </div>
         <div>
-          <label class="block text-sm text-gray-400 mb-1">Preço Normal (R$)</label>
-          <input type="number" [(ngModel)]="formData.price_per_hour" class="w-full bg-[#0B0E14] border border-gray-700 rounded-lg p-3 text-white outline-none focus:border-[#00E676]">
+          <label class="block text-sm font-semibold text-pia-cream mb-1">Preço Normal (R$)</label>
+          <input type="number" [(ngModel)]="formData.price_per_hour" class="w-full bg-pia-dark border border-pia-green/30 rounded-xl p-3 text-pia-cream outline-none focus:border-pia-green-light">
         </div>
         <div>
-          <label class="block text-sm text-gray-400 mb-1">Preço Horário Nobre (R$)</label>
-          <input type="number" [(ngModel)]="formData.price_peak_hour" class="w-full bg-[#0B0E14] border border-gray-700 rounded-lg p-3 text-white outline-none focus:border-[#00E676]">
+          <label class="block text-sm font-semibold text-pia-cream mb-1">Preço Horário Nobre (R$)</label>
+          <input type="number" [(ngModel)]="formData.price_peak_hour" class="w-full bg-pia-dark border border-pia-green/30 rounded-xl p-3 text-pia-cream outline-none focus:border-pia-green-light">
         </div>
         <div>
-          <label class="block text-sm text-gray-400 mb-1">Capacidade (pessoas)</label>
-          <input type="number" [(ngModel)]="formData.capacity" class="w-full bg-[#0B0E14] border border-gray-700 rounded-lg p-3 text-white outline-none focus:border-[#00E676]">
+          <label class="block text-sm font-semibold text-pia-cream mb-1">Capacidade (pessoas)</label>
+          <input type="number" [(ngModel)]="formData.capacity" class="w-full bg-pia-dark border border-pia-green/30 rounded-xl p-3 text-pia-cream outline-none focus:border-pia-green-light">
         </div>
       </div>
 
-      <button (click)="saveCourt()" class="w-full bg-[#00E676] hover:bg-[#00C853] text-black font-bold py-3 rounded-lg transition-colors">
+      <button (click)="saveCourt()" class="w-full bg-pia-green hover:bg-pia-green-light text-pia-cream font-extrabold py-3 rounded-xl transition-colors">
         Salvar Quadra
       </button>
     </div>

@@ -27,12 +27,12 @@
           <div class="flex items-center gap-4">
             <span class="text-[#00E676] font-bold text-lg">R$ {{ booking.total_price }}</span>
             <span class="px-3 py-1 rounded-full text-xs font-bold uppercase"
-                  [ngClass]="{
-                    'bg-yellow-500/20 text-yellow-500': booking.status === 'pending',
-                    'bg-green-500/20 text-green-500': booking.status === 'confirmed',
-                    'bg-red-500/20 text-red-500': booking.status === 'cancelled'
-                  }">
-              {{ booking.status }}
+            [ngClass]="{
+            'bg-yellow-500/20 text-yellow-500': booking.status === 'pending',
+            'bg-green-500/20 text-green-500': booking.status === 'confirmed',
+            'bg-red-500/20 text-red-500': booking.status === 'cancelled'
+            }">
+            {{ booking.status === 'pending' ? 'Pendente' : booking.status === 'confirmed' ? 'Confirmada' : 'Cancelada' }}
             </span>
             <a [routerLink]="['/booking-details', booking.id]" class="bg-gray-700 hover:bg-gray-600 text-white text-sm px-3 py-1 rounded transition-colors">
               Detalhes
