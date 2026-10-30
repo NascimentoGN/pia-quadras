@@ -1,3 +1,4 @@
+import waitlistRoutes from './routes/waitlistRoutes.js';
 import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
@@ -29,6 +30,7 @@ app.use('/api/courts', courtRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/courts', courtRoutes);
 app.use('/api/bookings', bookingRoutes);
+app.use('/api/waitlist', waitlistRoutes);
 
 // Rota de health check
 app.get('/api/health', (req, res) => {

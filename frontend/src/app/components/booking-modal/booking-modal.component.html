@@ -11,6 +11,7 @@
         <label class="block text-sm text-gray-400 mb-1">Data</label>
         <input type="date" [(ngModel)]="bookingDate" class="w-full bg-[#0B0E14] border border-gray-700 rounded-lg p-3 text-white outline-none focus:border-[#00E676]">
       </div>
+      
       <div>
         <label class="block text-sm text-gray-400 mb-1">Horário</label>
         <select [(ngModel)]="startTime" class="w-full bg-[#0B0E14] border border-gray-700 rounded-lg p-3 text-white outline-none focus:border-[#00E676]">
@@ -19,6 +20,12 @@
           <option value="10:00">10:00</option>
           <option value="19:00">19:00</option>
         </select>
+      </div>
+
+      <div>
+        <label class="block text-sm text-gray-400 mb-1">Convidar Amigos (E-mails separados por vírgula)</label>
+        <input type="text" [(ngModel)]="guestEmails" placeholder="amigo1@email.com, amigo2@email.com" class="w-full bg-[#0B0E14] border border-gray-700 rounded-lg p-3 text-white outline-none focus:border-[#00E676]">
+        <p class="text-xs text-gray-500 mt-1">O valor será dividido automaticamente entre vocês.</p>
       </div>
     </div>
 

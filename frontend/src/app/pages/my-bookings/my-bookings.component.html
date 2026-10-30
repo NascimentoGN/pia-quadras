@@ -1,0 +1,45 @@
+<app-header></app-header>
+
+<main class="max-w-5xl mx-auto px-6 pt-28 pb-10">
+  <h1 class="text-3xl font-bold text-white mb-6">Minhas Reservas</h1>
+
+  @if (loading) {
+    <p class="text-gray-400">Carregando reservas...</p>
+  } @else if (errorMessage) {
+    <p class="text-red-500">{{ errorMessage }}</p>
+  } @else if (bookings.length === 0) {
+    <div class="bg-[#151A23] border border-gray-800 rounded-xl p-10 text-center">
+      <p class="text-gray-400 mb-4">Você ainda não tem nenhuma reserva.</p>
+      <a routerLink="/" class="inline-block bg-[#00E676] hover:bg-[#00C853] text-black font-bold py-3 px-6 rounded-lg transition-colors">
+        Fazer uma reserva
+      </a>
+    </div>
+  } @else {
+    <div class="grid grid-cols-1 gap-4">
+      @for (booking of bookings; track booking.id) {
+        <div class="bg-[#151A23] border border-gray-800 rounded-xl p-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+          <div>
+            <h3 class="text-xl font-bold text-white">{{ booking.court_name }}</h3>
+            <p class="text-gray-400 text-sm mt-1">
+              📅 {{ booking.booking_date }} às {{ booking.start_time }}
+            </p>
+          </div>
+          <div class="flex items-center gap-4">
+            <span class="text-[#00E676] font-bold text-lg">R$ {{ booking.total_price }}</span>
+            <span class="px-3 py-1 rounded-full text-xs font-bold uppercase"
+                  [ngClass]="{
+                    'bg-yellow-500/20 text-yellow-500': booking.status === 'pending',
+                    'bg-green-500/20 text-green-500': booking.status === 'confirmed',
+                    'bg-red-500/20 text-red-500': booking.status === 'cancelled'
+                  }">
+              {{ booking.status }}
+            </span>
+            <a [routerLink]="['/booking-details', booking.id]" class="bg-gray-700 hover:bg-gray-600 text-white text-sm px-3 py-1 rounded transition-colors">
+              Detalhes
+            </a>
+          </div>
+        </div>
+      }
+    </div>
+  }
+</main>

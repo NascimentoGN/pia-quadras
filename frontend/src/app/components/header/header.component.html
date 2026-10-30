@@ -8,6 +8,9 @@
   <div class="flex items-center gap-6">
     @if (currentUser) {
       <div class="flex items-center gap-4">
+        <a routerLink="/my-bookings" class="text-gray-300 hover:text-[#00E676] text-sm font-semibold transition-colors">
+          Minhas Reservas
+        </a>
         <span class="text-gray-300 text-sm">Olá, <span class="text-white font-bold">{{ currentUser.name }}</span></span>
         <button (click)="logout()" class="text-gray-400 hover:text-red-500 text-sm transition-colors">Sair</button>
       </div>
