@@ -2,11 +2,20 @@ import pool from '../config/database.js';
 
 export const Court = {
     findAll: async () => {
-        const [rows] = await pool.query('SELECT * FROM courts WHERE is_active = TRUE ORDER BY id ASC');
+        const [rows] = await pool.query(
+            `SELECT 
+                c.*, 
+                COALESCE(AVG(r.rating), 0) as average_rating,
+                COUNT(r.id) as total_reviews
+             FROM courts c
+             LEFT JOIN reviews r ON c.id = r.court_id
+             WHERE c.is_active = TRUE
+             GROUP BY c.id
+             ORDER BY c.id ASC`
+        );
         return rows;
     },
 
-    // NOVA FUNÇÃO: Busca todas, sem filtro de is_active
     findAllForAdmin: async () => {
         const [rows] = await pool.query('SELECT * FROM courts ORDER BY id ASC');
         return rows;
