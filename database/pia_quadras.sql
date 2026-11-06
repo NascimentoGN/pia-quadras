@@ -11,7 +11,7 @@ USE pia_quadras;
 -- ============================================
 -- TABELA: users
 -- ============================================
-CREATE TABLE users (
+CREATE TABLE IF NOT EXISTS users (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
     email VARCHAR(150) UNIQUE NOT NULL,
@@ -30,13 +30,13 @@ CREATE TABLE users (
 -- ============================================
 -- TABELA: courts (Quadras)
 -- ============================================
-CREATE TABLE courts (
+CREATE TABLE IF NOT EXISTS courts (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
     type ENUM('society', 'areia', 'tenis', 'futsal', 'basquete', 'volei') NOT NULL,
     description TEXT,
     price_per_hour DECIMAL(10,2) NOT NULL,
-    price_peak_hour DECIMAL(10,2), -- Preço em horário nobre
+    price_peak_hour DECIMAL(10,2),
     image_url VARCHAR(255),
     capacity INT DEFAULT 10,
     is_active BOOLEAN DEFAULT TRUE,
@@ -50,7 +50,7 @@ CREATE TABLE courts (
 -- ============================================
 -- TABELA: operating_hours (Horário de Funcionamento)
 -- ============================================
-CREATE TABLE operating_hours (
+CREATE TABLE IF NOT EXISTS operating_hours (
     id INT AUTO_INCREMENT PRIMARY KEY,
     court_id INT,
     day_of_week TINYINT NOT NULL, -- 0=Dom, 1=Seg, ..., 6=Sáb
@@ -65,10 +65,10 @@ CREATE TABLE operating_hours (
 -- ============================================
 -- TABELA: bookings (Reservas)
 -- ============================================
-CREATE TABLE bookings (
+CREATE TABLE IF NOT EXISTS bookings (
     id INT AUTO_INCREMENT PRIMARY KEY,
     court_id INT NOT NULL,
-    user_id INT NOT NULL, -- Quem criou a reserva
+    user_id INT NOT NULL,
     booking_date DATE NOT NULL,
     start_time TIME NOT NULL,
     end_time TIME NOT NULL,
@@ -89,11 +89,11 @@ CREATE TABLE bookings (
 -- ============================================
 -- TABELA: booking_players (Jogadores e Divisão de Pagamento)
 -- ============================================
-CREATE TABLE booking_players (
+CREATE TABLE IF NOT EXISTS booking_players (
     id INT AUTO_INCREMENT PRIMARY KEY,
     booking_id INT NOT NULL,
     user_id INT,
-    guest_name VARCHAR(100), -- Para convidados sem cadastro
+    guest_name VARCHAR(100),
     guest_email VARCHAR(150),
     amount_due DECIMAL(10,2) NOT NULL,
     payment_status ENUM('pending', 'paid', 'refunded', 'expired') DEFAULT 'pending',
@@ -111,14 +111,14 @@ CREATE TABLE booking_players (
 -- ============================================
 -- TABELA: waitlist (Lista de Espera)
 -- ============================================
-CREATE TABLE waitlist (
+CREATE TABLE IF NOT EXISTS waitlist (
     id INT AUTO_INCREMENT PRIMARY KEY,
     court_id INT NOT NULL,
     user_id INT NOT NULL,
     desired_date DATE NOT NULL,
     desired_start_time TIME NOT NULL,
     desired_end_time TIME NOT NULL,
-    priority INT DEFAULT 0, -- Prioridade na fila
+    priority INT DEFAULT 0,
     status ENUM('waiting', 'notified', 'converted', 'expired', 'cancelled') DEFAULT 'waiting',
     notified_at TIMESTAMP NULL,
     expires_at TIMESTAMP NULL,
@@ -133,15 +133,15 @@ CREATE TABLE waitlist (
 -- ============================================
 -- TABELA: payments (Histórico de Transações)
 -- ============================================
-CREATE TABLE payments (
+CREATE TABLE IF NOT EXISTS payments (
     id INT AUTO_INCREMENT PRIMARY KEY,
     booking_player_id INT NOT NULL,
-    gateway_id VARCHAR(100), -- ID da transação no gateway
-    gateway_name VARCHAR(50), -- mercado_pago, pagarme, etc
+    gateway_id VARCHAR(100),
+    gateway_name VARCHAR(50),
     amount DECIMAL(10,2) NOT NULL,
     status ENUM('pending', 'approved', 'rejected', 'refunded') DEFAULT 'pending',
     payment_method VARCHAR(50),
-    qr_code TEXT, -- PIX Copia e Cola
+    qr_code TEXT,
     qr_code_image VARCHAR(500),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -149,4 +149,23 @@ CREATE TABLE payments (
     FOREIGN KEY (booking_player_id) REFERENCES booking_players(id) ON DELETE CASCADE,
     INDEX idx_gateway (gateway_id),
     INDEX idx_status (status)
+) ENGINE=InnoDB;
+
+-- ============================================
+-- TABELA: reviews (Avaliações das Quadras) - NOVO
+-- ============================================
+CREATE TABLE IF NOT EXISTS reviews (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    booking_id INT NOT NULL,
+    court_id INT NOT NULL,
+    user_id INT NOT NULL,
+    rating TINYINT NOT NULL CHECK (rating BETWEEN 1 AND 5),
+    comment TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    
+    FOREIGN KEY (booking_id) REFERENCES bookings(id) ON DELETE CASCADE,
+    FOREIGN KEY (court_id) REFERENCES courts(id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    
+    UNIQUE KEY unique_review_per_booking (booking_id, user_id) 
 ) ENGINE=InnoDB;
