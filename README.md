@@ -1,4 +1,4 @@
-# 🏐 PiáQuadra
+# ⚽ PiáQuadra
 
 Sistema web de agendamento e gestão de quadras esportivas com divisão automática de pagamentos e lista de espera.
 
@@ -70,13 +70,26 @@ Foi desenvolvido um **MVP (Produto Mínimo Viável) 100% funcional** com arquite
 
 ## 📸 Telas do sistema
 
-*(Adicione aqui os prints das telas do seu sistema rodando. Se ainda não tiver, tire um print da Home, do Modal de Reserva e do Painel Admin e suba para o repositório)*
-
-| Painel do Administrador | Tela de Reserva (Split) |
+### 🔐 Autenticação e Acesso
+| Tela de Login | Tela de Cadastro |
 | :---: | :---: |
-| *[Insira o print aqui]* | *[Insira o print aqui]* |
+| ![Login](./docs/entrar.webp) | ![Cadastro](./docs/cadastro.webp) |
 
----
+### 🏐 Área do Jogador (Player)
+**Home - Vitrine de Quadras e Filtros**
+![Home](./docs/inicial.webp)
+
+| Modal "Sobre a Arena" | Modal de Reserva (Split de Pagamento) |
+| :---: | :---: |
+| ![Sobre](./docs/sobre.png) | ![Reserva](./docs/reserva.webp) |
+
+**Histórico de Reservas do Jogador**
+![Minhas Reservas](./docs/minhas_reservas.webp)
+
+### 🛡️ Área do Administrador (Admin)
+| Painel Geral de Reservas | Gestão de Clientes e Usuários |
+| :---: | :---: |
+| ![Admin Dashboard](./docs/painel_adm.webp) | ![Admin Users](./docs/painel_adm_2.webp) |
 
 ## 🗂️ Arquitetura e Estrutura do projeto
 
@@ -103,6 +116,7 @@ pia-quadras-main/
     │   │   ├── pages/      # Home, Login, Admin, My-Bookings
     │   │   └── services/   # Consumo da API HTTP
     │   └── public/         # Imagens e Logos
+```
 
 
 ## 🚀 Como executar
@@ -113,20 +127,26 @@ pia-quadras-main/
 - Angular CLI (`npm install -g @angular/cli`)
 
 ### Passo 1: Banco de Dados
-1. Abra o seu gerenciador MySQL (Workbench, DBeaver, etc).
-2. Execute o script `database/pia_quadras.sql`. Ele criará o banco, as tabelas e os índices necessários.
+1. Abra o MySQL Workbench.
+2. Clique na sua conexão local (geralmente chamada de Local instance MySQL80 ou algo do tipo) e digite a sua senha de root.
+3. No menu superior, clique em File > Open SQL Script... (ou aperte Ctrl + Shift + O).
+4. Navegue até a pasta do seu projeto, entre em database e selecione o arquivo pia_quadras.sql , O código vai aparecer na tela.
+5. Olhe para a barra de ferramentas em cima do código. Clique no ícone de um raiozinho (⚡) chamado Execute (ou aperte Ctrl + Shift + Enter).
+6. Espere alguns segundos. Lá embaixo, na aba "Output" (ou "Action Output"), vai aparecer um monte de checkmarks verdes ✅ indicando que as tabelas foram criadas com sucesso.
+
 
 ### Passo 2: Backend
 1. Acesse a pasta do backend: `cd backend`
 2. Instale as dependências: `npm install`
 3. Renomeie o arquivo `.env.example` para `.env` e preencha com as suas credenciais do MySQL (Host, User, Password).
 4. Inicie o servidor: `npm run dev`
+
 *(O servidor rodará em http://localhost:3000)*
 
 ### Passo 3: Frontend
 1. Em outro terminal, acesse a pasta do frontend: `cd frontend`
 2. Instale as dependências: `npm install`
-3. Inicie o Angular: `ng serve`
+3. Inicie o Angular: `npx ng serve`
 4. Abra o navegador em `http://localhost:4200`
 
 ---
