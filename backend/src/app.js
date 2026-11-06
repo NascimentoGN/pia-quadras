@@ -8,7 +8,8 @@ import authRoutes from './routes/authRoutes.js';
 import courtRoutes from './routes/courtRoutes.js';
 import bookingRoutes from './routes/bookingRoutes.js';
 import waitlistRoutes from './routes/waitlistRoutes.js';
-import userRoutes from './routes/userRoutes.js'; // <-- NOVO
+import userRoutes from './routes/userRoutes.js';
+import reviewRoutes from './routes/reviewRoutes.js'; // <-- NOVO
 
 dotenv.config();
 
@@ -25,7 +26,8 @@ app.use('/api/auth', authRoutes);
 app.use('/api/courts', courtRoutes);
 app.use('/api/bookings', bookingRoutes);
 app.use('/api/waitlist', waitlistRoutes);
-app.use('/api/users', userRoutes); // <-- NOVO
+app.use('/api/users', userRoutes);
+app.use('/api/reviews', reviewRoutes); // <-- NOVO
 
 app.get('/api/health', (req, res) => {
     res.json({ status: 'ok', message: 'Pia Quadra API rodando! 🏐' });

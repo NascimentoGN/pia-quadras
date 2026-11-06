@@ -1,49 +1,78 @@
 <app-header></app-header>
 
 <main class="max-w-4xl mx-auto px-6 pt-28 pb-10">
-  <a routerLink="/my-bookings" class="text-gray-400 hover:text-white mb-4 inline-block">← Voltar para Minhas Reservas</a>
+  <a routerLink="/my-bookings" class="text-gray-400 hover:text-pia-cream mb-4 inline-block transition-colors">← Voltar para Minhas Reservas</a>
 
   @if (loading) {
     <p class="text-gray-400">Carregando detalhes...</p>
   } @else if (errorMessage) {
     <p class="text-red-500">{{ errorMessage }}</p>
   } @else if (booking) {
-    <div class="bg-[#151A23] border border-gray-800 rounded-xl p-6 mb-6">
-      <h1 class="text-3xl font-bold text-white mb-2">{{ booking.court_name }}</h1>
+    <div class="bg-pia-card border border-pia-green/30 rounded-2xl p-6 mb-6">
+      <h1 class="text-3xl font-extrabold text-pia-cream mb-2">{{ booking.court_name }}</h1>
       <p class="text-gray-400 mb-4">📅 {{ booking.booking_date }} às {{ booking.start_time }}</p>
       <div class="flex items-center gap-4">
-        <span class="text-[#00E676] font-bold text-2xl">R$ {{ booking.total_price }}</span>
+        <span class="text-pia-green-light font-bold text-2xl">R$ {{ booking.total_price }}</span>
         <span class="px-3 py-1 rounded-full text-xs font-bold uppercase bg-yellow-500/20 text-yellow-500">
-          {{ booking.status }}
+          {{ booking.status === 'pending' ? 'Pendente' : booking.status === 'confirmed' ? 'Confirmada' : 'Cancelada' }}
         </span>
       </div>
     </div>
 
-        <h2 class="text-xl font-bold text-white mb-4">Divisão de Pagamento</h2>
-    <div class="grid grid-cols-1 gap-3">
+    <h2 class="text-xl font-bold text-pia-cream mb-4">Divisão de Pagamento</h2>
+    <div class="grid grid-cols-1 gap-3 mb-8">
       @for (player of booking.players; track player.id) {
-        <div class="bg-[#151A23] border border-gray-800 rounded-xl p-4 flex justify-between items-center">
+        <div class="bg-pia-card border border-pia-green/30 rounded-2xl p-4 flex justify-between items-center">
           <div>
-            <!-- Mostra o convidado ou o ID do usuário se não tiver nome -->
-            <p class="text-white font-bold">
-              {{ player.guest_email || 'Usuário ID: ' + player.user_id }}
-            </p>
-            <p class="text-xs text-gray-500">
-              {{ player.guest_email ? 'Convidado' : 'Você' }}
-            </p>
+            <p class="text-pia-cream font-bold">{{ player.user_name || player.guest_email }}</p>
+            <p class="text-xs text-gray-500">{{ player.user_email || 'Convidado' }}</p>
           </div>
           <div class="flex items-center gap-4">
-            <span class="text-white font-bold">R$ {{ player.amount_due }}</span>
+            <span class="text-pia-cream font-bold">R$ {{ player.amount_due }}</span>
             <span class="px-2 py-1 rounded text-xs font-bold uppercase"
                   [ngClass]="{
                     'bg-yellow-500/20 text-yellow-500': player.payment_status === 'pending',
                     'bg-green-500/20 text-green-500': player.payment_status === 'paid'
                   }">
-              {{ player.payment_status }}
+              {{ player.payment_status === 'pending' ? 'Pendente' : 'Pago' }}
             </span>
           </div>
         </div>
       }
     </div>
+
+    <!-- SEÇÃO DE AVALIAÇÃO -->
+    @if (booking.status === 'confirmed' || booking.status === 'completed') {
+      <div class="bg-pia-card border border-pia-green/30 rounded-2xl p-6">
+        <h2 class="text-xl font-bold text-pia-cream mb-4">Como foi seu jogo?</h2>
+        <p class="text-sm text-gray-400 mb-4">Sua avaliação ajuda outros jogadores a escolherem a quadra ideal.</p>
+        
+        <div class="flex gap-2 mb-4">
+          @for (star of [1,2,3,4,5]; track star) {
+            <button (click)="rating = star" class="text-3xl transition-transform hover:scale-110 focus:outline-none">
+              <span [ngClass]="star <= rating ? 'text-yellow-400' : 'text-gray-600'">★</span>
+            </button>
+          }
+        </div>
+
+        <textarea 
+          [(ngModel)]="comment" 
+          rows="3" 
+          placeholder="Conte como foi sua experiência (opcional)..." 
+          class="w-full bg-pia-dark border border-pia-green/30 rounded-xl p-3 text-pia-cream outline-none focus:border-pia-green-light mb-4"
+        ></textarea>
+
+        <button 
+          (click)="submitReview()" 
+          [disabled]="isSubmittingReview"
+          class="bg-pia-green hover:bg-pia-green-light disabled:bg-gray-600 text-pia-cream font-bold py-3 px-6 rounded-xl transition-colors w-full">
+          {{ isSubmittingReview ? 'Enviando...' : 'Enviar Avaliação' }}
+        </button>
+      </div>
+    } @else {
+      <div class="bg-pia-card border border-pia-green/30 rounded-2xl p-6 text-center">
+        <p class="text-gray-400">Você poderá avaliar esta quadra após a confirmação do seu jogo.</p>
+      </div>
+    }
   }
 </main>
